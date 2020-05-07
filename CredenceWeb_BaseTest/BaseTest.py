@@ -1,6 +1,7 @@
 from selenium import webdriver
 import pytest
 from CredenceWeb_Utilities.ReadFromText import ReadFromText
+from CredenceWeb_Pages.CommonPage import CommonPage
 
 class Test_BaseTest:
     @pytest.yield_fixture()
@@ -12,6 +13,8 @@ class Test_BaseTest:
         self.driver.get("https://devconnect.credenceid.com/")
         yield
         self.driver.quit()
+
+
 
 
 
