@@ -1,6 +1,5 @@
-from CredenceWeb_Utilities.ReadFromText import ReadFromText
+from CredenceWeb_Utilities.LoginIntoApplication import LoginToApplication
 
-def check(self):
-    read = ReadFromText()
+LoginToApplication.loginToApp(0, 0)
 
-    print(read.getDataFromExcel(self))
+
