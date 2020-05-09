@@ -1,5 +1,13 @@
-from CredenceWeb_Utilities.LoginIntoApplication import LoginToApplication
+import os
 
-LoginToApplication.loginToApp(0, 0)
+path = "D:/FinalFrameWork/CredenceWeb_DataSource/MasterData.xlsx"
+start = "CredenceWeb_DataSource/MasterData.xlsx"
+
+relativepath = os.path.relpath(path, start)
+
+print(relativepath)
+
+
+
 
 

@@ -4,8 +4,9 @@ import xlrd
 
 class ReadFromFiles():
 
+    @staticmethod
     def readFromProp(self, propertyKey):
-        PathFile = "../CredenceWeb_DataSource/BrowserEnter.txt"
+        PathFile = "D:/FinalFrameWork/CredenceWeb_DataSource/MasterData.xlsx"
         self.config = configparser.RawConfigParser()
         self.config.read(PathFile)
         self.value = self.config.get('BROWSER', propertyKey)
@@ -13,16 +14,17 @@ class ReadFromFiles():
 
     @staticmethod
     def readFromExcel(self, SheetName, rowNum, ColumnNum):
-        ExcelPath="../CredenceWeb_DataSource/MasterData.xlsx"
-        self.worbook = xlrd.open_workbook(ExcelPath)
-        value = self.worbook.sheet_by_name(SheetName).cell(rowNum, ColumnNum).value
+        excelPath = "..//CredenceWeb_DataSource//MasterData.xlsx"
+        worbook = xlrd.open_workbook(excelPath)
+        value = worbook.sheet_by_name(SheetName).cell_value(rowNum, ColumnNum)
         return value
 
-    def countActiveRows(SheetName):
-        ExcelPath = "../CredenceWeb_DataSource/MasterData.xlsx"
-        worbook = xlrd.open_workbook(ExcelPath)
+    @staticmethod
+    def countActiveRows(self, SheetName):
+        excelPath = "..//CredenceWeb_DataSource//MasterData.xlsx"
+        worbook = xlrd.open_workbook(excelPath)
         maxRowCount = worbook.sheet_by_name(SheetName).nrows
-        print(maxRowCount)
+        return maxRowCount
 
     
 

@@ -14,7 +14,17 @@ class Test_BaseTest:
         yield
         self.driver.quit()
 
+    # def pytest_addoption(parser):
+    #     parser.addoption("--browser", help="Need to enter the browser name on which TestSuite should run")
+    #     parser.addoption("--platform", help="Need to enter the OS name on which TestSuite should run")
 
+    # @pytest.fixture()
+    # def browser(request):
+    #     return request.BaseTest.getoption("--browser")
+    #
+    # @pytest.fixture()
+    # def platform(request):
+    #     return request.BaseTest.getoption("--platform")
 
 
 

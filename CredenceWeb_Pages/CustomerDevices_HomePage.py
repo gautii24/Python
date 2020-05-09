@@ -2,7 +2,7 @@ class CustomerDevice:
 
     def __init__(self, driver):
         self.driver=driver
-        self.addGroupName.xpath = "//a[text()='Add Group']"
+        self.enterGroupName.xpath = "//input[@name='nameGroupName']"
         self.listView.xpath= "//img[@class='layout-mode-image']"
         self.searchTab.xpath = "//input[@id='search_field']"
         self.allDevices.xpath = "//div[@title='All Devices']"
