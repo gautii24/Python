@@ -1,5 +1,5 @@
 import configparser
-import xlrd
+import openpyxl
 
 
 class ReadFromFiles():
@@ -14,17 +14,20 @@ class ReadFromFiles():
 
     @staticmethod
     def readFromExcel(self, SheetName, rowNum, ColumnNum):
-        excelPath = "..//CredenceWeb_DataSource//MasterData.xlsx"
-        worbook = xlrd.open_workbook(excelPath)
-        value = worbook.sheet_by_name(SheetName).cell_value(rowNum, ColumnNum)
-        return value
+        excelPath = "D:/FinalFrameWork/CredenceWeb_DataSource/MasterData.xlsx"
+        self.wb = openpyxl.load_workbook(excelPath)
+        self.ws = self.wb.get_sheet_by_name(SheetName)
+        self.value = self.ws.cell(row=rowNum, column=ColumnNum).value
+        return self.value
+
 
     @staticmethod
     def countActiveRows(self, SheetName):
-        excelPath = "..//CredenceWeb_DataSource//MasterData.xlsx"
-        worbook = xlrd.open_workbook(excelPath)
-        maxRowCount = worbook.sheet_by_name(SheetName).nrows
-        return maxRowCount
+        excelPath = "D:/FinalFrameWork\CredenceWeb_DataSource/MasterData.xlsx"
+        self.wb = openpyxl.load_workbook(excelPath)
+        self.ws = self.wb.get_sheet_by_name(SheetName)
+        self.maxRowCount = self.ws.max_row
+        return self.maxRowCount
 
     
 

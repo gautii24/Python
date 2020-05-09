@@ -1,25 +1,70 @@
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
+from CredenceWeb_Utilities.CustomSeleniumDriver import CustomDriver
+from selenium import webdriver
 
-
-class WelcomePage:
+class WelcomePage(CustomDriver):
 
     def __init__(self, driver):
-        self.driver = driver;
-        self.username_xpath = "//input[@id='formBasicEmail']"
-        self.password_xpath = "//input[@id='formBasicPassword']"
-        self.clickTerms_xpath = "//input[@id='formBasicAccept']"
-        self.clickloginButton_xpath = "//button[@class='btn btn-default sign-in-btn btn-nocolorbg btn btn-primary']"
+        super().__init__(driver)
+        self.driver = driver
 
-    def enterUserName(self, username):
-        self.driver.find_element_by_xpath(self.username_xpath).send_keys(username)
+    #Locators of Login Page
+
+    _login_usernameField = "//input[@id='formBasicEmail']"
+    _login_passwordField = "//input[@id='formBasicPassword']"
+    _login_AcceptChbx = "//input[@id='formBasicAccept']"
+    _login_signInBtn = "//button[@class='btn btn-default sign-in-btn btn-nocolorbg btn btn-primary']"
+    _login_errorMessage = "//div[contains(text(),'Wrong email')]"
+
+    #Elements of Login Page
+
+    def getloginUsername(self):
+        return self.driver.find_element(By.XPATH, self._login_usernameField)
+
+    def getloginPassword(self):
+        return self.driver.find_element(By.XPATH, self._login_passwordField)
+
+    def getAcceptConditionsChkbx(self):
+        return self.driver.find_element(By.XPATH, self._login_AcceptChbx)
+
+    def getSignInButton(self):
+        return self.driver.find_element(By.XPATH, self._login_signInBtn)
+
+    def getSignErrrorMessage(self):
+        return self.driver.find_element(By.XPATH, self._login_errorMessage)
+
+
+    #Generic methods of Login Page
+
+    def enterUsername(self, username):
+        self.elementClear(self._login_usernameField, locatorType="xpath")
+        self.sendKeys(username, self._login_usernameField, locatorType="xpath")
 
     def enterPassword(self, password):
-        self.driver.find_element_by_xpath(self.password_xpath).send_keys(password)
+        self.elementClear(self._login_passwordField, locatorType="xpath")
+        self.sendKeys(password, self._login_passwordField, locatorType="xpath")
 
-    def clickTermsConditions(self):
-        self.driver.find_element_by_xpath(self.clickTerms_xpath).click()
+    def clickAcceptTermsCheckbox(self):
+        self.elementClick(self._login_AcceptChbx, locatorType="xpath")
 
-    def clickSigIn(self):
-        self.driver.find_element_by_xpath(self.clickloginButton_xpath).click()
+    def clickSignInButton(self):
+        self.elementClick(self._login_signInBtn, locatorType="xpath")
+
+    def waitdisplayederrorMessage(self):
+        self.waitForElement(self._login_errorMessage, timeout=10, pollFrequency=0.5)
+
+    def loginIntoApplication(self, username, password):
+        self.enterUsername(username)
+        self.enterPassword(password)
+        self.clickAcceptTermsCheckbox()
+        self.clickSignInButton()
+
+
+
+
+
 
 
 
