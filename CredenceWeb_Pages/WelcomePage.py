@@ -1,8 +1,7 @@
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from CredenceWeb_Utilities.CustomSeleniumDriver import CustomDriver
-from selenium import webdriver
+
+
 
 class WelcomePage(CustomDriver):
 
@@ -32,7 +31,7 @@ class WelcomePage(CustomDriver):
     def getSignInButton(self):
         return self.driver.find_element(By.XPATH, self._login_signInBtn)
 
-    def getSignErrrorMessage(self):
+    def getSignErrorMessage(self):
         return self.driver.find_element(By.XPATH, self._login_errorMessage)
 
 
@@ -52,8 +51,9 @@ class WelcomePage(CustomDriver):
     def clickSignInButton(self):
         self.elementClick(self._login_signInBtn, locatorType="xpath")
 
-    def waitdisplayederrorMessage(self):
-        self.waitForElement(self._login_errorMessage, timeout=10, pollFrequency=0.5)
+    def waitdisplayerrorMessage(self):
+        self.waitForElement(self._login_errorMessage, locatorType="xpath", timeout=10)
+
 
     def loginIntoApplication(self, username, password):
         self.enterUsername(username)

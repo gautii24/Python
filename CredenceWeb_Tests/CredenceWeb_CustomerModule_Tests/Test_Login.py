@@ -1,51 +1,40 @@
-import pytest
-import unittest
 from CredenceWeb_SetUp.BaseTest import Test_BaseTest
-from CredenceWeb_Utilities.LoginIntoApplication import LoginToApplication
 from CredenceWeb_Utilities.ReadFromFile import ReadFromFiles
 from CredenceWeb_Pages.WelcomePage import WelcomePage
-from CredenceWeb_Pages.CommonPage import CommonPage
+from CredenceWeb_Utilities.CustomSeleniumDriver import CustomDriver
+from CredenceWeb_Pages.CommonElementsPage import CommonElementsPage
+from CredenceWeb_Pages.CommonElementsPage import CommonElementsPage
 import time
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.by import By
+
 
 class TestLoginCheck(Test_BaseTest):
 
-    def test_valid_loginFunctionalityCheck(self, test_base):
 
-        rowCount = ReadFromFiles.countActiveRows(self, 'Valid_LoginCredentials')
+
+    #Check Login Functionality with Valid Credentials
+    def test_valid_loginFunctionalityCheck(self, test_base):
+        welcomePage = WelcomePage(self.driver)
+        commonElements = CommonElementsPage(self.driver)
+        rowMax = ReadFromFiles.countActiveRows(self, 'Valid_LoginCredentials')
+        for i in range(2, rowMax+1):
+            userName = ReadFromFiles.readFromExcel(self, 'Valid_LoginCredentials', i, 1)
+            password = ReadFromFiles.readFromExcel(self, 'Valid_LoginCredentials', i, 2)
+            welcomePage.loginIntoApplication(userName, password)
+            commonElements.clickProfileArrow()
+            commonElements.clickSignOut()
+
+    def test_Invalid_loginFunctionalityCheck(self, test_base):
+        welcomePage = WelcomePage(self.driver)
+        rowCount = ReadFromFiles.countActiveRows(self, 'InValid_LoginCredentials')
         print(rowCount)
         for i in range(2, rowCount+1):
-            username = ReadFromFiles.readFromExcel(self, 'Valid_LoginCredentials', i, 1)
-            password = ReadFromFiles.readFromExcel(self, 'Valid_LoginCredentials', i, 2)
-            welcomePage = WelcomePage(self.driver)
-            commonPage = CommonPage(self.driver)
-            welcomePage.enterUserName(username)
-            welcomePage.enterPassword(password)
-            welcomePage.clickTermsConditions()
-            welcomePage.clickSigIn()
-            assert welcomePage.profileboxDisplayed() == True
-            commonPage.clickProfileArrow()
-            commonPage.clickSignOut()
-            i = i + 1
+            userName = ReadFromFiles.readFromExcel(self, 'InValid_LoginCredentials', i, 1)
+            password = ReadFromFiles.readFromExcel(self, 'InValid_LoginCredentials', i, 2)
+            welcomePage.loginIntoApplication(userName, password)
+            time.sleep(3)
+            welcomePage.waitdisplayerrorMessage()
 
-    # def test_Invalid_loginFunctionalityCheck(self, test_base):
-    #
-    #     rowCount = ReadFromFiles.countActiveRows(self, 'InValid_LoginCredentials')
-    #     print(rowCount)
-    #     for i in range(2, rowCount+1):
-    #         username = ReadFromFiles.readFromExcel(self, 'InValid_LoginCredentials', i, 1)
-    #         password = ReadFromFiles.readFromExcel(self, 'InValid_LoginCredentials', i, 2)
-    #         welcomePage = WelcomePage(self.driver)
-    #         commonPage = CommonPage(self.driver)
-    #         welcomePage.enterUserName(username)
-    #         welcomePage.enterPassword(password)
-    #         welcomePage.clickTermsConditions()
-    #         welcomePage.clickSigIn()
-    #         WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//div[contains(text(), 'Wrong email')]")))
-    #         assert welcomePage.errorMessage() == True
-    #         i = i + 1
+
 
 
 

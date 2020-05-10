@@ -9,8 +9,7 @@ class CustomDriver:
     def __init__(self, driver):
         self.driver = driver
 
-    def getElementByType(self, locatorType):
-
+    def getByType(self, locatorType):
         locatorType = locatorType.lower()
         if locatorType == "id":
             return By.ID
@@ -24,14 +23,11 @@ class CustomDriver:
             return By.CLASS_NAME
         elif locatorType == "linktext":
             return By.LINK_TEXT
-        elif locatorType == "partiallinktext":
-            return By.PARTIAL_LINK_TEXT
-        elif locatorType == "tagname":
-            return By.TAG_NAME
         else:
-            print("Locator Type " + locatorType + " not supported")
+            print("Locator type " + locatorType + " not correct/supported")
+        return False
 
-    def getElement(self, locator, locatorType= "xpath"):
+    def getElement(self, locator, locatorType):
         element = None
         try:
             locatorType = locatorType.lower()
@@ -42,7 +38,7 @@ class CustomDriver:
             print("Element not found")
         return element
 
-    def getElements(self, locator, locatorType= "xpath"):
+    def getElements(self, locator, locatorType):
         elements = []
         try:
             locatorType = locatorType.lower()
@@ -54,7 +50,7 @@ class CustomDriver:
         return elements
 
 
-    def elementClick(self, locator, locatorType= "xpath"):
+    def elementClick(self, locator, locatorType):
         try:
             element = self.getElement(locator, locatorType)
             element.click()
@@ -63,7 +59,7 @@ class CustomDriver:
             print("Cannot click on the element with locator: " + locator + " locatorType: " + locatorType)
             print_stack()
 
-    def elementClear(self, locator, locatorType= "xpath"):
+    def elementClear(self, locator, locatorType):
         try:
             element = self.getElement(locator, locatorType)
             element.clear()
@@ -72,7 +68,7 @@ class CustomDriver:
             print("Cannot clear the element with locator: " + locator + " locatorType: " + locatorType)
             print_stack()
 
-    def sendKeys(self, data, locator, locatorType= "xpath"):
+    def sendKeys(self, data, locator, locatorType):
         try:
             element = self.getElement(locator, locatorType)
             element.send_keys(data)
@@ -108,19 +104,17 @@ class CustomDriver:
             print("Element not found")
             return False
 
-    def waitForElement(self, locator, locatorType,
-                       timeout=10, pollFrequency=0.5):
+    def waitForElement(self, locator, locatorType, timeout=10):
         element = None
         try:
             byType = self.getByType(locatorType)
             print("Waiting for maximum :: " + str(timeout) +
                   " :: seconds for element to be clickable")
-            wait = WebDriverWait(self.driver, 10, poll_frequency=1,
+            wait = WebDriverWait(self.driver, timeout, pollFrequency=0.5,
                                  ignored_exceptions=[NoSuchElementException,
                                                      ElementNotVisibleException,
                                                      ElementNotSelectableException])
-            element = wait.until(EC.element_to_be_clickable((byType,
-                                                             "stopFilter_stops-0")))
+            element = wait.until(EC.element_to_be_clickable((byType, locator)))
             print("Element appeared on the web page")
         except:
             print("Element not appeared on the web page")
